@@ -14,13 +14,12 @@ define umount_nfs::umount (
       command => "fuser -k ${title}",
       path    => ['/bin', '/sbin', '/usr/sbin'],
       returns => ['0','1'],
-      onlyif  => "fuser -uv ${title}",
+      onlyif  => 'fuser -mv ${title}',
 #      before  => Mount["umount-${title}"],
     }
   }
   mount { "umount-${title}" :
     ensure => 'absent',
     name   => $title,
-    require => Exec["umount_with_fuser-${title}"],
   }
 }
